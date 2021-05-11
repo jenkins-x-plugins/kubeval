@@ -30,18 +30,3 @@ changelog:
     exclude:
     - '^docs:'
     - '^test:'
-brews:
-- github:
-    owner: instrumenta
-    name: homebrew-instrumenta
-  folder: Formula
-  description: "Validate your Kubernetes configurations"
-  homepage: "https://github.com/jenkins-x-plugins/kubeval"
-  test: |
-    system "#{bin}/kubeval --version"
-scoop:
-  bucket:
-    owner: instrumenta
-    name: scoop-instrumenta
-  description: "Validate your Kubernetes configurations"
-  homepage: "https://github.com/jenkins-x-plugins/kubeval"
