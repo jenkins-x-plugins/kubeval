@@ -22,8 +22,8 @@ vendor:
 bin:
 	mkdir bin
 
-release:
-	goreleaser --rm-dist
+release: build
+#	goreleaser --rm-dist
 
 snapshot:
 	goreleaser --snapshot --skip-publish --rm-dist
