@@ -64,6 +64,7 @@ func GetOutputManager(outFmt, loggingLevel string) outputManager {
 // STDOutputManager reports `kubeval` results to stdout.
 type STDOutputManager struct {
 	loggingLevel string
+	SuccessCount int
 }
 
 // newSTDOutputManager instantiates a new instance of STDOutputManager.
@@ -87,6 +88,8 @@ func (s *STDOutputManager) Put(result ValidationResult) error {
 	} else {
 		if s.loggingLevel != levelWARN {
 			kLog.Success(result.FileName, "contains a valid", result.Kind, fmt.Sprintf("(%s)", result.QualifiedName()))
+		} else {
+			s.SuccessCount++
 		}
 	}
 
@@ -94,7 +97,10 @@ func (s *STDOutputManager) Put(result ValidationResult) error {
 }
 
 func (s *STDOutputManager) Flush() error {
-	// no op
+	if s.loggingLevel == levelWARN {
+		kLog.Success(fmt.Sprintf("%d valid files", s.SuccessCount))
+		s.SuccessCount = 0
+	}
 	return nil
 }
 

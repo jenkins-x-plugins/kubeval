@@ -104,6 +104,7 @@ var RootCmd = &cobra.Command{
 					os.Exit(1)
 				}
 			}
+			outputManager.Flush()
 		} else {
 			if len(args) < 1 && len(directories) < 1 {
 				log.Error(errors.New("You must pass at least one file as an argument, or at least one directory to the directories flag"))
