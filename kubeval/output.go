@@ -65,6 +65,7 @@ func GetOutputManager(outFmt, loggingLevel string) outputManager {
 type STDOutputManager struct {
 	loggingLevel string
 	SuccessCount int
+	Ignored      int
 }
 
 // newSTDOutputManager instantiates a new instance of STDOutputManager.
@@ -84,6 +85,8 @@ func (s *STDOutputManager) Put(result ValidationResult) error {
 	} else if !result.ValidatedAgainstSchema {
 		if s.loggingLevel != levelWARN && s.loggingLevel != levelSUCCESS {
 			kLog.Info(result.FileName, "containing a", result.Kind, fmt.Sprintf("(%s)", result.QualifiedName()), "was not validated against a schema")
+		} else {
+			s.Ignored++
 		}
 	} else {
 		if s.loggingLevel != levelWARN {
@@ -98,10 +101,20 @@ func (s *STDOutputManager) Put(result ValidationResult) error {
 
 func (s *STDOutputManager) Flush() error {
 	if s.loggingLevel == levelWARN {
-		kLog.Success(fmt.Sprintf("%d valid files", s.SuccessCount))
+		kLog.Success(fmt.Sprintf("%d valid %s", s.SuccessCount, pluralText("file", s.SuccessCount)))
 		s.SuccessCount = 0
 	}
+	if s.loggingLevel == levelWARN || s.loggingLevel == levelSUCCESS && s.Ignored > 0 {
+		kLog.Info(fmt.Sprintf("%d %s not validated against a schema", s.Ignored, pluralText("file", s.Ignored)))
+	}
 	return nil
+}
+
+func pluralText(text string, count int) string {
+	if count == 1 {
+		return text
+	}
+	return text + "s"
 }
 
 type status string

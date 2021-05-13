@@ -15,7 +15,7 @@ func Success(message ...string) {
 
 func Info(message ...string) {
 	blue := color.New(color.FgBlue).SprintFunc()
-	fmt.Printf("%s - %v\n", blue("PASS"), strings.Join(message, " "))
+	fmt.Printf("%s - %v\n", blue("INFO"), strings.Join(message, " "))
 }
 
 func Warn(message ...string) {
