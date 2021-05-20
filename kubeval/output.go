@@ -104,7 +104,7 @@ func (s *STDOutputManager) Flush() error {
 		kLog.Success(fmt.Sprintf("%d valid %s", s.SuccessCount, pluralText("file", s.SuccessCount)))
 		s.SuccessCount = 0
 	}
-	if s.loggingLevel == levelWARN || s.loggingLevel == levelSUCCESS && s.Ignored > 0 {
+	if (s.loggingLevel == levelWARN || s.loggingLevel == levelSUCCESS) && s.Ignored > 0 {
 		kLog.Info(fmt.Sprintf("%d %s not validated against a schema", s.Ignored, pluralText("file", s.Ignored)))
 	}
 	return nil
